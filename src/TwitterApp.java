@@ -18,34 +18,15 @@ public class TwitterApp {
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
 		
 		for ( Ciudad ciudad : result ) {
-			System.out.println("Pasada -------------------------> "+ciudad.getCiudad());
-			//System.out.println(ciudad.getCiudad());
-			/*System.out.println(ciudad.getEstado());
-			System.out.println(ciudad.getLatitud());
-			System.out.println(ciudad.getLongitud());
-			System.out.println(ciudad.getRadio());*/
-			
 			//sleep 5 seconds
-			Thread.sleep(5000);
+			//Thread.sleep(5000);
 			
-			twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad());
+			twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
 		}
 		
-		//System.out.println(result.toString());
-
-		/*
-		for (int i = 0; i < loop; i++) {
-			System.out.println("Pasada -------------------------> "+i);
-			twitterMethods.queryTwitter();	
-		}*/
-		//
-		
-		
+		//twitterMethods.queryTwitterByGeoLocation(34.01940, -118.4108, 15, "", "Los Angeles");
 		//twitterMethods.streamTwitter()
 
 	}
-	
-	
-
 
 }
