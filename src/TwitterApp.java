@@ -17,12 +17,15 @@ public class TwitterApp {
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
 		
-		for ( Ciudad ciudad : result ) {
-			//sleep 5 seconds
-			//Thread.sleep(5000);
-			
-			twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
-		}
+		int i = 0;
+		do{
+			for ( Ciudad ciudad : result ) {
+				//sleep 5 seconds
+				//System.out.println(ciudad.getCiudad());
+				twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
+			}
+			Thread.sleep(120000);
+		} while (i==0);
 		
 		//twitterMethods.queryTwitterByGeoLocation(34.01940, -118.4108, 15, "", "Los Angeles");
 		//twitterMethods.streamTwitter()

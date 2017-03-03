@@ -1,5 +1,6 @@
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelos.Tweets;
 import modelos.Users;
 
 public class DbMethods {
@@ -21,7 +23,7 @@ public class DbMethods {
 				"root");
 		c.setAutoCommit(true);
 		
-		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio  FROM ciudades ORDER BY censo_2010 DESC LIMIT 1";
+		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio  FROM ciudades ORDER BY censo_2010 DESC LIMIT 20";
 
 		//PreparedStatement stmt = null;
 		//stmt = c.prepareStatement(sql);
@@ -81,11 +83,34 @@ public class DbMethods {
 			   // Your exception handling code goes between these 
 			   // curly braces, similar to the exception clause 
 			   // in a PL/SQL block.
+		}
+	}
+	
+
+	public void insertatweet (Tweets tweet, Connection c ) throws SQLException {
+		
+		String sql = "INSERT INTO twitter_tweets(id_tweet, tweet, id_user, created, ciudad)"
+				+ " VALUES (?, ?, ?, ?, ?);";
+		PreparedStatement st = null;
+		st = c.prepareStatement(sql);
+		st.setLong(1, tweet.getId_tweet());
+		st.setString(2,tweet.getTweet());
+		st.setLong(3,tweet.getId_user());
+		st.setTimestamp(4, tweet.getCreated());
+		st.setString(5,tweet.getCiudad());
+		
+
+		System.out.println(st.toString());
+		try {
+			st.executeUpdate();
+		} catch(Exception ex) {
+			System.out.println(ex);
+			   // Your exception handling code goes between these 
+			   // curly braces, similar to the exception clause 
+			   // in a PL/SQL block.
 	}
 		
 		
 	}
-	
-	
 	
 }

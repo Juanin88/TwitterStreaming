@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import modelos.Tweets;
 import modelos.Users;
@@ -141,7 +142,15 @@ public class TwitterMethods {
 					tweet.setId_tweet(status.getId());
 					tweet.setId_user(status.getUser().getId());
 					tweet.setTweet(status.getText());
-					tweet.setCreated(date);
+					
+					
+					java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
+					
+					System.out.println( sqlDate.toString() );
+					
+					tweet.setCreated( sqlDate );
+					
+					System.out.println(status.getCreatedAt());
 					
 					System.out.println(tweet.toString());
 					
@@ -175,6 +184,7 @@ public class TwitterMethods {
 					
 					dbMethods.insertaUsuario(user, c);
 					
+					dbMethods.insertatweet(tweet, c);
 
 					
 					

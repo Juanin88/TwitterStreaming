@@ -1,5 +1,8 @@
 package modelos;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Tweets {
 	 /* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -12,7 +15,7 @@ public class Tweets {
 	private long id_tweet;
 	 private String tweet;
 	 private long id_user;
-	 private String created;
+	 private Timestamp created;
 	 private String ciudad;
 	/**
 	 * @return the id_tweet
@@ -53,14 +56,14 @@ public class Tweets {
 	/**
 	 * @return the created
 	 */
-	public String getCreated() {
+	public Timestamp getCreated() {
 		return created;
 	}
 	/**
-	 * @param created the created to set
+	 * @param sqlDate the created to set
 	 */
-	public void setCreated(String created) {
-		this.created = created;
+	public void setCreated(Timestamp sqlDate) {
+		this.created = sqlDate;
 	}
 	/**
 	 * @return the ciudad
