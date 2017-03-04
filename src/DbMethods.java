@@ -28,7 +28,7 @@ public class DbMethods {
 		c.setAutoCommit(true);
 		
 		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio "
-				+ "FROM ciudades ORDER BY censo_2010 DESC LIMIT 20";
+				+ "FROM ciudades ORDER BY censo_2010 DESC LIMIT 10";
 		Statement st = c.createStatement();
 	
 		ResultSet resultSet = st.executeQuery(sql);

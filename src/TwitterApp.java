@@ -20,10 +20,21 @@ public class TwitterApp {
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
 		
+		File file = new File("C:/streaming/logTwitterStreaming.log");
 
 		
 		int i = 0;
 		do{
+
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+				i=1;
+			}
+			
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
 			Date date = new Date();
 
 			for ( Ciudad ciudad : result ) {
@@ -34,31 +45,21 @@ public class TwitterApp {
 				} catch (Exception e) {
 					// TODO: handle exception
 					System.out.println("Excedido el limite de consultas, esperando...");
-					Thread.sleep(1200000);
+					bw.write(System.getProperty("line.separator"));
+					bw.write("Consultas excedidas : "+date.toLocaleString());
+					Thread.sleep(300000);
 				}
 				
 				System.out.println(ciudad.getCiudad());
 			}
 			
-			//System.out.println("Tweets consultados ====================> "+ result.getCount() + " - "+ ciudad);
-			String content = date.toLocaleString();
-			
-			File file = new File("C:/streaming/logTwitterStreaming.log");
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write(System.getProperty("line.separator"));
-			bw.write(content);
-			
+			bw.write(date.toLocaleString());
 			bw.close();
 
 			
 			System.out.println(date.toLocaleString());
-			Thread.sleep(120000);
+			Thread.sleep(60000);
 		} while (i==0);
 
 	}
