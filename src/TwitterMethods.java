@@ -1,31 +1,19 @@
-import twitter4j.FilterQuery;
 import twitter4j.GeoLocation;
 import twitter4j.HashtagEntity;
 import twitter4j.Query;
-import twitter4j.Query.ResultType;
 import twitter4j.QueryResult;
-import twitter4j.StallWarning;
 import twitter4j.Status;
-import twitter4j.StatusDeletionNotice;
-import twitter4j.StatusListener;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.TwitterStream;
-import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import modelos.Hashtag;
 import modelos.Tweets;
@@ -66,11 +54,11 @@ public class TwitterMethods {
 		DbMethods dbMethods = new DbMethods();
 		
 		for (Status status : result.getTweets()) {
-
 		
 				if (status.getRetweetCount() == 0) {
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					@SuppressWarnings("unused")
 					String date = sdf.format(status.getCreatedAt());					
 					
 					tweet.setCiudad(ciudad);
