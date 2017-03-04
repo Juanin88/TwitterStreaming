@@ -14,7 +14,7 @@ import modelos.Users;
 
 /**
  * 
- * @author LenovoY50
+ * @author Juan Garfias Vázquez
  *
  */
 public class DbMethods {
@@ -77,8 +77,6 @@ public class DbMethods {
 			st.executeUpdate();
 		} catch(Exception ex) {
 			c.commit();
-			System.out.println(st.toString());
-			System.out.println(ex);
 		}
 	}
 	
@@ -99,8 +97,6 @@ public class DbMethods {
 			st.executeUpdate();
 		} catch(Exception ex) {
 			c.commit();
-			System.out.println(st.toString());
-			System.out.println(ex);
 		}
 	}
 	
@@ -119,8 +115,6 @@ public class DbMethods {
 			st.executeUpdate();
 		} catch(Exception ex) {
 			c.commit();
-			System.out.println(st.toString());
-			System.out.println(ex);
 		}
 	}
 	

@@ -1,4 +1,3 @@
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -21,14 +20,11 @@ public class TwitterApp {
 		do{
 			for ( Ciudad ciudad : result ) {
 				//sleep 5 seconds
-				//System.out.println(ciudad.getCiudad());
 				twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
+				System.out.println(ciudad.getCiudad());				
 			}
 			Thread.sleep(120000);
 		} while (i==0);
-		
-		//twitterMethods.queryTwitterByGeoLocation(34.01940, -118.4108, 15, "", "Los Angeles");
-		//twitterMethods.streamTwitter()
 
 	}
 
