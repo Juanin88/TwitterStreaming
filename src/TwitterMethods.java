@@ -27,6 +27,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import modelos.Hashtag;
 import modelos.Tweets;
 import modelos.Users;
 
@@ -104,6 +105,7 @@ public class TwitterMethods {
 		bw.write(content);
 		Tweets tweet = new Tweets();
 		Users user = new Users();
+		Hashtag hashtag = new Hashtag();
 		
 		Connection c = null;
 
@@ -146,13 +148,13 @@ public class TwitterMethods {
 					
 					java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
 					
-					System.out.println( sqlDate.toString() );
+					//System.out.println( sqlDate.toString() );
 					
 					tweet.setCreated( sqlDate );
 					
-					System.out.println(status.getCreatedAt());
+					//System.out.println(status.getCreatedAt());
 					
-					System.out.println(tweet.toString());
+					//System.out.println(tweet.toString());
 					
 					//bw.write(System.getProperty("line.separator"));
 					//bw.write(status.getSource());
@@ -182,14 +184,18 @@ public class TwitterMethods {
 					user.setFollowers_count(status.getUser().getFollowersCount());
 					user.setLocation(status.getUser().getLocation());
 					
-					dbMethods.insertaUsuario(user, c);
-					
-					dbMethods.insertatweet(tweet, c);
 
 					
 					
+					dbMethods.insertaUsuario(user, c);
 					
-					System.out.println(user.toString());
+					dbMethods.insertaTweet(tweet, c);
+					
+					
+					
+					
+					
+					//System.out.println(user.toString());
 //					System.out.println(status.getId());
 //					System.out.println(status.getText());
 //					System.out.println(status.getUser().getScreenName());
@@ -199,10 +205,16 @@ public class TwitterMethods {
 						HashtagEntity[] hashtagEntity = status.getHashtagEntities().clone();
 						bw.write(System.getProperty("line.separator"));
 						bw.write("HHHHHAAAAASSSSSHHHHHHTTTTTAAAAAAGGGGGSSSSSS!!!!!! ================================");
+						//System.out.println("hastag=======>>>>");
 						for ( HashtagEntity o: hashtagEntity ){
-							System.out.println(o.getText());
+							//System.out.println(o.getText());
 							bw.write(System.getProperty("line.separator"));
 							bw.write(o.getText());
+							hashtag.setId_tweet(status.getId());
+							hashtag.setId_user(status.getUser().getId());
+							hashtag.setHashtag(o.getText());
+							
+							dbMethods.insertaHashtag(hashtag, c);
 						}
 					}
 				}

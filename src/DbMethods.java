@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -9,9 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelos.Hashtag;
 import modelos.Tweets;
 import modelos.Users;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class DbMethods {
 	
 	public List<Ciudad> getGeoLocationCities() throws ClassNotFoundException, SQLException {
@@ -23,16 +28,12 @@ public class DbMethods {
 				"root");
 		c.setAutoCommit(true);
 		
-		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio  FROM ciudades ORDER BY censo_2010 DESC LIMIT 20";
-
-		//PreparedStatement stmt = null;
-		//stmt = c.prepareStatement(sql);
+		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio "
+				+ "FROM ciudades ORDER BY censo_2010 DESC LIMIT 20";
 		Statement st = c.createStatement();
 	
-		//System.out.println(sql.toString());
 		ResultSet resultSet = st.executeQuery(sql);
 
-		
 		List<Ciudad> ciudades = new ArrayList<Ciudad>();
 		
 		
@@ -49,11 +50,8 @@ public class DbMethods {
 			ciudad.setCenso_estimado_2015(resultSet.getInt("censo_estimado_2015"));
 			ciudad.setRadio(resultSet.getDouble("radio"));
 		    ciudades.add(ciudad);
-		    
 		}
-		
-		//System.out.println(ciudades.toString());
-		
+
 		resultSet.close();
 		st.close();
 		
@@ -75,19 +73,17 @@ public class DbMethods {
 		st.setInt(6,user.getFollowers_count());
 		st.setString(7,user.getLocation());
 
-		System.out.println(st.toString());
 		try {
 			st.executeUpdate();
 		} catch(Exception ex) {
+			c.commit();
+			System.out.println(st.toString());
 			System.out.println(ex);
-			   // Your exception handling code goes between these 
-			   // curly braces, similar to the exception clause 
-			   // in a PL/SQL block.
 		}
 	}
 	
 
-	public void insertatweet (Tweets tweet, Connection c ) throws SQLException {
+	public void insertaTweet (Tweets tweet, Connection c ) throws SQLException {
 		
 		String sql = "INSERT INTO twitter_tweets(id_tweet, tweet, id_user, created, ciudad)"
 				+ " VALUES (?, ?, ?, ?, ?);";
@@ -98,19 +94,34 @@ public class DbMethods {
 		st.setLong(3,tweet.getId_user());
 		st.setTimestamp(4, tweet.getCreated());
 		st.setString(5,tweet.getCiudad());
-		
 
-		System.out.println(st.toString());
 		try {
 			st.executeUpdate();
 		} catch(Exception ex) {
+			c.commit();
+			System.out.println(st.toString());
 			System.out.println(ex);
-			   // Your exception handling code goes between these 
-			   // curly braces, similar to the exception clause 
-			   // in a PL/SQL block.
+		}
 	}
+	
+	
+	public void insertaHashtag (Hashtag hashtag, Connection c ) throws SQLException {
 		
-		
+		String sql = "INSERT INTO twitter_hashtags(id_tweet, id_user, hashtag)"
+				+ " VALUES (?, ?, ?);";
+		PreparedStatement st = null;
+		st = c.prepareStatement(sql);
+		st.setLong(1, hashtag.getId_tweet());
+		st.setLong(2,hashtag.getId_user());
+		st.setString(3,hashtag.getHashtag());
+
+		try {
+			st.executeUpdate();
+		} catch(Exception ex) {
+			c.commit();
+			System.out.println(st.toString());
+			System.out.println(ex);
+		}
 	}
 	
 }
