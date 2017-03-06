@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
+import Stanford.StanfordSentimentAnalyzer;
 import modelos.Hashtag;
 import modelos.Tweets;
 import modelos.Users;
@@ -26,7 +27,7 @@ public class TwitterMethods {
 
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
-
+		
 		// Recibe el string para filtrar la busqueda.
 		Query query = new Query(queryString);
 
@@ -60,13 +61,14 @@ public class TwitterMethods {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					@SuppressWarnings("unused")
 					String date = sdf.format(status.getCreatedAt());					
-					
+					java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
+
 					tweet.setCiudad(ciudad);
 					tweet.setId_tweet(status.getId());
 					tweet.setId_user(status.getUser().getId());
 					tweet.setTweet(status.getText());
-					
-					java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
+					tweet.setSentimiento(StanfordSentimentAnalyzer.getSentiment(status.getText() ));
+					//tweet.setSentimiento("");
 					tweet.setCreated( sqlDate );
 					
 					// Datos del Usuario.

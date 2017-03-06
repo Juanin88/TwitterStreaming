@@ -25,7 +25,8 @@ public class TwitterApp {
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
 		
-		File file = new File("C:/streaming/logTwitterStreaming.log");
+		//File file = new File("C:/streaming/logTwitterStreaming.log");
+		File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
 
 		
 		int i = 0;

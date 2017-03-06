@@ -1,7 +1,6 @@
 package modelos;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Tweets {
 	 /* (non-Javadoc)
@@ -10,13 +9,14 @@ public class Tweets {
 	@Override
 	public String toString() {
 		return "Tweets [id_tweet=" + id_tweet + ", tweet=" + tweet + ", id_user=" + id_user + ", created=" + created
-				+ ", ciudad=" + ciudad + "]";
+				+ ", ciudad=" + ciudad + ", sentimiento=" + sentimiento + "]";
 	}
 	private long id_tweet;
 	 private String tweet;
 	 private long id_user;
 	 private Timestamp created;
 	 private String ciudad;
+	 private String sentimiento;
 	/**
 	 * @return the id_tweet
 	 */
@@ -76,6 +76,12 @@ public class Tweets {
 	 */
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
+	}
+	public String getSentimiento() {
+		return sentimiento;
+	}
+	public void setSentimiento(String sentimiento) {
+		this.sentimiento = sentimiento;
 	}
 	 
 	 

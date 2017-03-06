@@ -24,6 +24,7 @@
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/twitter4j-4.0.4/twitter4j-core/twitter4j-core-4.0.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/twitter4j-4.0.4/twitter4j-stream/twitter4j-stream-4.0.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/twitter4j-4.0.4/twitter4j-media-support/twitter4j-media-support-4.0.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/stanford-corenlp-full-2016-10-31/ejml-0.23.jar"/>
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/stanford-corenlp-full-2016-10-31/stanford-corenlp-3.7.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/stanford-corenlp-full-2016-10-31/stanford-corenlp-3.7.0-models.jar"/>
 	<classpathentry kind="lib" path="C:/Users/LenovoY50/Documents/workspaceJEE/stanford-corenlp-full-2016-10-31/stanford-corenlp-3.7.0-sources.jar"/>

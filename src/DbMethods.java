@@ -82,8 +82,8 @@ public class DbMethods {
 
 	public void insertaTweet (Tweets tweet, Connection c ) throws SQLException {
 		
-		String sql = "INSERT INTO twitter_tweets(id_tweet, tweet, id_user, created, ciudad)"
-				+ " VALUES (?, ?, ?, ?, ?);";
+		String sql = "INSERT INTO twitter_tweets(id_tweet, tweet, id_user, created, ciudad, sentimiento)"
+				+ " VALUES (?, ?, ?, ?, ?, ?);";
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setLong(1, tweet.getId_tweet());
@@ -91,6 +91,7 @@ public class DbMethods {
 		st.setLong(3,tweet.getId_user());
 		st.setTimestamp(4, tweet.getCreated());
 		st.setString(5,tweet.getCiudad());
+		st.setString(6,tweet.getSentimiento());
 
 		try {
 			st.executeUpdate();
