@@ -14,6 +14,11 @@ public class TwitterApp {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) throws Exception {
+		executeStreaming();
+	}
+
+	@SuppressWarnings("static-access")
+	public static void executeStreaming () throws Exception{
 		TwitterMethods twitterMethods = new TwitterMethods();
 		
 		DbMethods dbMethods = new DbMethods();
@@ -61,7 +66,7 @@ public class TwitterApp {
 			System.out.println(date.toLocaleString());
 			Thread.sleep(60000);
 		} while (i==0);
-
 	}
 
+	
 }
