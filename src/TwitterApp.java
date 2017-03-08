@@ -14,7 +14,17 @@ public class TwitterApp {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) throws Exception {
-		executeStreaming();
+		
+		int i = 0;
+		do{
+			try {
+				executeStreaming();
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.gc(); 
+			}
+		} while (i==0);
+		
 	}
 
 	@SuppressWarnings("static-access")
@@ -24,11 +34,10 @@ public class TwitterApp {
 		DbMethods dbMethods = new DbMethods();
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
-		
-		//File file = new File("C:/streaming/logTwitterStreaming.log");
-		File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
 
-		
+		File file = new File("C:/streaming/logTwitterStreaming.log");
+		//File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
+
 		int i = 0;
 		do{
 
@@ -48,22 +57,21 @@ public class TwitterApp {
 				
 				try {
 					twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
+					System.out.println(ciudad.getCiudad());
 				} catch (Exception e) {
 					// TODO: handle exception
 					System.out.println("Excedido el limite de consultas, esperando...");
+					System.out.println(e);
 					bw.write(System.getProperty("line.separator"));
 					bw.write("Consultas excedidas : "+date.toLocaleString());
 					Thread.sleep(300000);
 				}
-				
-				System.out.println(ciudad.getCiudad());
 			}
 			
 			bw.write(System.getProperty("line.separator"));
 			bw.write(date.toLocaleString());
 			bw.close();
 
-			
 			System.out.println(date.toLocaleString());
 			Thread.sleep(60000);
 		} while (i==0);

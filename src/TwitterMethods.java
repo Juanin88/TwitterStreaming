@@ -21,7 +21,14 @@ import modelos.Tweets;
 import modelos.Users;
 
 public class TwitterMethods {
-
+	
+	private static String pattern;
+	
+	public TwitterMethods() {
+		super();
+		this.setPattern("[^a-zA-Z0-9 .,:;@#$&ÑñáéíóúÁÉÍÓÚ%'´]+");
+	}
+	
 	public static void queryTwitterByGeoLocation(double latitude, double longitude, double radius, String queryString, String ciudad, String lang) throws TwitterException, IOException, ClassNotFoundException, SQLException {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 
@@ -45,8 +52,7 @@ public class TwitterMethods {
 		
 		Connection c = null;
 
-		Class.forName("org.postgresql.Driver");
-		c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/social_network", "postgres","root");
+		c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false");
 		c.setAutoCommit(false);
 
 		//PreparedStatement stmt = null;
@@ -56,48 +62,56 @@ public class TwitterMethods {
 		
 		for (Status status : result.getTweets()) {
 		
-				if (status.getRetweetCount() == 0) {
-					
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					@SuppressWarnings("unused")
-					String date = sdf.format(status.getCreatedAt());					
-					java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
+			if (status.getRetweetCount() == 0) {
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				@SuppressWarnings("unused")
+				String date = sdf.format(status.getCreatedAt());					
+				java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
 
-					tweet.setCiudad(ciudad);
-					tweet.setId_tweet(status.getId());
-					tweet.setId_user(status.getUser().getId());
-					tweet.setTweet(status.getText());
-					tweet.setSentimiento(StanfordSentimentAnalyzer.getSentiment(status.getText() ));
-					//tweet.setSentimiento("");
-					tweet.setCreated( sqlDate );
-					
-					// Datos del Usuario.
-					user.setId_user(status.getUser().getId());
-					user.setScreen_name(status.getUser().getScreenName());
-					user.setReal_name(status.getUser().getName());
-					user.setDescription(status.getUser().getDescription());
-					user.setFriends_count(status.getUser().getFriendsCount());
-					user.setFollowers_count(status.getUser().getFollowersCount());
-					user.setLocation(status.getUser().getLocation());
+				tweet.setCiudad(ciudad);
+				tweet.setId_tweet(status.getId());
+				tweet.setId_user(status.getUser().getId());
+				tweet.setTweet(status.getText());
+				tweet.setSentimiento(StanfordSentimentAnalyzer.getSentiment(status.getText().replaceAll( getPattern()  , "").trim() ));
+				//tweet.setSentimiento("");
+				tweet.setCreated( sqlDate );
+				
+				// Datos del Usuario.
+				user.setId_user(status.getUser().getId());
+				user.setScreen_name(status.getUser().getScreenName());
+				user.setReal_name(status.getUser().getName());
+				user.setDescription(status.getUser().getDescription());
+				user.setFriends_count(status.getUser().getFriendsCount());
+				user.setFollowers_count(status.getUser().getFollowersCount());
+				user.setLocation(status.getUser().getLocation());
 
-					dbMethods.insertaUsuario(user, c);
-					dbMethods.insertaTweet(tweet, c);
-					
-					// Datos del Hashtag
-					if (status.getHashtagEntities().length > 0) {
-						HashtagEntity[] hashtagEntity = status.getHashtagEntities().clone();
-						for ( HashtagEntity o: hashtagEntity ){
-							//System.out.println(o.getText());
-							hashtag.setId_tweet(status.getId());
-							hashtag.setId_user(status.getUser().getId());
-							hashtag.setHashtag(o.getText());
-							
-							dbMethods.insertaHashtag(hashtag, c);
-						}
+				dbMethods.insertaUsuario(user, c);
+				dbMethods.insertaTweet(tweet, c);
+				
+				// Datos del Hashtag
+				if (status.getHashtagEntities().length > 0) {
+					HashtagEntity[] hashtagEntity = status.getHashtagEntities().clone();
+					for ( HashtagEntity o: hashtagEntity ){
+						//System.out.println(o.getText());
+						hashtag.setId_tweet(status.getId());
+						hashtag.setId_user(status.getUser().getId());
+						hashtag.setHashtag(o.getText());
+						
+						dbMethods.insertaHashtag(hashtag, c);
 					}
 				}
+			}
 		}
 		c.commit();
 		st.close();
+	}
+
+	public static String getPattern() {
+		return pattern;
+	}
+
+	public void setPattern(String pattern) {
+		TwitterMethods.pattern = pattern;
 	}
 }

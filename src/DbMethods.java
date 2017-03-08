@@ -18,13 +18,17 @@ import modelos.Users;
  */
 public class DbMethods {
 	
+	private String pattern;
+
+	public DbMethods() {
+		super();
+		this.pattern = "[^a-zA-Z0-9 .,:;@#$&—Ò·ÈÌÛ˙¡…Õ”⁄%'¥]+";
+	}
+
 	public List<Ciudad> getGeoLocationCities() throws ClassNotFoundException, SQLException {
 
-		Connection c = null;
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false&?useUnicode=true");
 
-		Class.forName("org.postgresql.Driver");
-		c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/social_network", "postgres",
-				"root");
 		c.setAutoCommit(true);
 		
 		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio "
@@ -65,16 +69,18 @@ public class DbMethods {
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setLong(1, user.getId_user());
-		st.setString(2,user.getScreen_name());
-		st.setString(3,user.getReal_name());
-		st.setString(4,user.getDescription());
+		st.setString(2,user.getScreen_name().replaceAll(this.pattern,"").trim());
+		st.setString(3, user.getReal_name().replaceAll(this.pattern,"").trim());
+		st.setString(4, user.getDescription().replaceAll(this.pattern,"").trim());
 		st.setInt(5,user.getFriends_count());
 		st.setInt(6,user.getFollowers_count());
 		st.setString(7,user.getLocation());
-
+		
 		try {
 			st.executeUpdate();
 		} catch(Exception ex) {
+			//System.out.println("User : " + ex);
+			//System.out.println(user.toString());
 			c.commit();
 		}
 	}
@@ -87,7 +93,7 @@ public class DbMethods {
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setLong(1, tweet.getId_tweet());
-		st.setString(2,tweet.getTweet());
+		st.setString(2,tweet.getTweet().replaceAll(this.pattern,"").trim());
 		st.setLong(3,tweet.getId_user());
 		st.setTimestamp(4, tweet.getCreated());
 		st.setString(5,tweet.getCiudad());
@@ -96,6 +102,8 @@ public class DbMethods {
 		try {
 			st.executeUpdate();
 		} catch(Exception ex) {
+			//System.out.println("Tweet : "+ex);
+			//System.out.println(tweet.toString());
 			c.commit();
 		}
 	}
@@ -114,6 +122,7 @@ public class DbMethods {
 		try {
 			st.executeUpdate();
 		} catch(Exception ex) {
+			//System.out.println("Hashtag : "+ex);
 			c.commit();
 		}
 	}
