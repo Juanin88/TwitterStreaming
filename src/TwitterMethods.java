@@ -14,9 +14,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import Stanford.StanfordSentimentAnalyzer;
+import modelos.FiltroPalabra;
 import modelos.Hashtag;
+import modelos.Palabras;
 import modelos.Tweets;
 import modelos.Users;
 
@@ -29,7 +33,7 @@ public class TwitterMethods {
 		this.setPattern("[^a-zA-Z0-9 .,:;@#$&—Ò·ÈÌÛ˙¡…Õ”⁄%'¥]+");
 	}
 	
-	public static void queryTwitterByGeoLocation(double latitude, double longitude, double radius, String queryString, String ciudad, String lang) throws TwitterException, IOException, ClassNotFoundException, SQLException {
+	public static void queryTwitterByGeoLocation(double latitude, double longitude, double radius, String queryString, String ciudad, String lang, List<Palabras> palabras) throws TwitterException, IOException, ClassNotFoundException, SQLException {
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 
 		TwitterFactory tf = new TwitterFactory(cb.build());
@@ -68,7 +72,7 @@ public class TwitterMethods {
 				@SuppressWarnings("unused")
 				String date = sdf.format(status.getCreatedAt());					
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
-
+				
 				tweet.setCiudad(ciudad);
 				tweet.setId_tweet(status.getId());
 				tweet.setId_user(status.getUser().getId());
@@ -88,7 +92,18 @@ public class TwitterMethods {
 
 				dbMethods.insertaUsuario(user, c);
 				dbMethods.insertaTweet(tweet, c);
-				
+
+				String s = status.getText().toLowerCase();
+				for (Palabras palabra : palabras){
+					int validaString = s.indexOf(palabra.getPalabra());
+					if(validaString>0){
+						FiltroPalabra filtroPalabra = new FiltroPalabra();
+						filtroPalabra.setId_filtro_palabra(palabra.getId_twitter_filtro());
+						filtroPalabra.setId_tweet(status.getId());
+						dbMethods.insertaFiltroPalabra(filtroPalabra, c);
+					}
+				}
+
 				// Datos del Hashtag
 				if (status.getHashtagEntities().length > 0) {
 					HashtagEntity[] hashtagEntity = status.getHashtagEntities().clone();

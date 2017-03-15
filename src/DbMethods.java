@@ -7,7 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelos.FiltroPalabra;
 import modelos.Hashtag;
+import modelos.Palabras;
 import modelos.Tweets;
 import modelos.Users;
 
@@ -62,6 +64,41 @@ public class DbMethods {
 		
 	}
 	
+	public List<Palabras> getWordList() throws ClassNotFoundException, SQLException {
+
+		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false&?useUnicode=true");
+
+		c.setAutoCommit(true);
+		
+		String sql = "SELECT twitter_filtro_palabras.id_twitter_filtro,"
+				+ "twitter_filtro_palabras.palabra,"
+				+ "twitter_filtro_palabras.id_filtro_palabra"
+				+ " FROM social_network.twitter_filtro_palabras where id_twitter_filtro=1 AND activa=1";
+		Statement st = c.createStatement();
+	
+		ResultSet resultSet = st.executeQuery(sql);
+
+		List<Palabras> palabras = new ArrayList<Palabras>();
+		
+		
+		while (resultSet.next())
+		{
+			Palabras palabra = new Palabras();
+			
+			palabra.setId_twitter_filtro(resultSet.getInt("id_filtro_palabra"));
+			palabra.setPalabra(resultSet.getString("palabra"));
+			palabra.setId(resultSet.getInt("id_twitter_filtro"));
+			
+			palabras.add(palabra);
+		}
+
+		resultSet.close();
+		st.close();
+		
+		return palabras;
+		
+	}
+	
 	public void insertaUsuario (Users user, Connection c ) throws SQLException {
 		
 		String sql = "INSERT INTO twitter_user(id_user, screen_name, real_name, description, friends_count, followers_count, location)"
@@ -108,7 +145,6 @@ public class DbMethods {
 		}
 	}
 	
-	
 	public void insertaHashtag (Hashtag hashtag, Connection c ) throws SQLException {
 		
 		String sql = "INSERT INTO twitter_hashtags(id_tweet, id_user, hashtag)"
@@ -127,4 +163,21 @@ public class DbMethods {
 		}
 	}
 	
+	public void insertaFiltroPalabra (FiltroPalabra filtroPalabra, Connection c ) throws SQLException {
+		
+		String sql = "INSERT INTO `social_network`.`twitter_tweets_filtro_palabra` (`id_filtro_palabra`,`id_tweet`)"
+				+ "VALUES(?, ?);";
+		PreparedStatement st = null;
+		st = c.prepareStatement(sql);
+		st.setInt(1, filtroPalabra.getId_filtro_palabra());
+		st.setLong(2,filtroPalabra.getId_tweet());
+		
+		try {
+			st.executeUpdate();
+		} catch(Exception ex) {
+			//System.out.println("Tweet : "+ex);
+			//System.out.println(tweet.toString());
+			c.commit();
+		}
+	}
 }

@@ -4,6 +4,8 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.List;
 
+import modelos.Palabras;
+
 /**
  * 
  * @author Juan Garfias Vázquez.
@@ -14,13 +16,13 @@ public class TwitterApp {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) throws Exception {
-		
 		int i = 0;
 		do{
 			try {
 				executeStreaming();
 			} catch (Exception e) {
 				// TODO: handle exception
+				System.out.println(e);
 				System.gc(); 
 			}
 		} while (i==0);
@@ -29,22 +31,22 @@ public class TwitterApp {
 
 	@SuppressWarnings("static-access")
 	public static void executeStreaming () throws Exception{
+
 		TwitterMethods twitterMethods = new TwitterMethods();
 		
 		DbMethods dbMethods = new DbMethods();
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
+		List<Palabras> palabras = dbMethods.getWordList();
+		
+		//File file = new File("C:/streaming/logTwitterStreaming.log");
+		File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
 
-		File file = new File("C:/streaming/logTwitterStreaming.log");
-		//File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
-
-		int i = 0;
 		do{
 
 			// if file doesnt exists, then create it
 			if (!file.exists()) {
 				file.createNewFile();
-				i=1;
 			}
 			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
@@ -56,7 +58,14 @@ public class TwitterApp {
 				//sleep 5 seconds
 				
 				try {
-					twitterMethods.queryTwitterByGeoLocation(ciudad.getLatitud(), ciudad.getLongitud(), ciudad.getRadio(), "", ciudad.getCiudad(), "en");
+					twitterMethods.queryTwitterByGeoLocation(
+							ciudad.getLatitud(),
+							ciudad.getLongitud(),
+							ciudad.getRadio(),
+							"",
+							ciudad.getCiudad(),
+							"en",
+							palabras);
 					System.out.println(ciudad.getCiudad());
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -74,7 +83,7 @@ public class TwitterApp {
 
 			System.out.println(date.toLocaleString());
 			Thread.sleep(60000);
-		} while (i==0);
+		} while (true);
 	}
 
 	
