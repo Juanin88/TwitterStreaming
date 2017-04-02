@@ -1,3 +1,6 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -6,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import modelos.FiltroPalabra;
 import modelos.Hashtag;
@@ -27,10 +31,21 @@ public class DbMethods {
 		this.pattern = "[^a-zA-Z0-9 .,:;@#$&—Ò·ÈÌÛ˙¡…Õ”⁄%'¥]+";
 	}
 
-	public List<Ciudad> getGeoLocationCities() throws ClassNotFoundException, SQLException {
+	public List<Ciudad> getGeoLocationCities() throws ClassNotFoundException, SQLException, IOException {
 
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false&?useUnicode=true");
+		Properties props = new Properties();
+		FileInputStream fis = null;
+		fis = new FileInputStream("db.properties");
+		props.load(fis);
 
+		// load the Driver Class
+		Class.forName(props.getProperty("driver"));
+
+		// create the connection now
+		Connection c = DriverManager.getConnection(props.getProperty("url"),
+				props.getProperty("username"),
+				props.getProperty("password"));
+		
 		c.setAutoCommit(true);
 		
 		String sql = "SELECT id, ciudad, estado, latitud, longitud, censo_2010, censo_estimado_2015, radio "
@@ -64,15 +79,26 @@ public class DbMethods {
 		
 	}
 	
-	public List<Palabras> getWordList() throws ClassNotFoundException, SQLException {
+	public List<Palabras> getWordList() throws ClassNotFoundException, SQLException, IOException {
 
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false&?useUnicode=true");
+		Properties props = new Properties();
+		FileInputStream fis = null;
+		fis = new FileInputStream("db.properties");
+		props.load(fis);
 
+		// load the Driver Class
+		Class.forName(props.getProperty("driver"));
+
+		// create the connection now
+		Connection c = DriverManager.getConnection(props.getProperty("url"),
+				props.getProperty("username"),
+				props.getProperty("password"));
+		
 		c.setAutoCommit(true);
 		
 		String sql = "SELECT twitter_filtro_palabras.id_twitter_filtro,"
 				+ "twitter_filtro_palabras.palabra,"
-				+ "twitter_filtro_palabras.id_filtro_palabra"
+				+ "twitter_filtro_palabras.id"
 				+ " FROM social_network.twitter_filtro_palabras where id_twitter_filtro=1 AND activa=1";
 		Statement st = c.createStatement();
 	
@@ -85,7 +111,7 @@ public class DbMethods {
 		{
 			Palabras palabra = new Palabras();
 			
-			palabra.setId_twitter_filtro(resultSet.getInt("id_filtro_palabra"));
+			palabra.setId_twitter_filtro(resultSet.getInt("id"));
 			palabra.setPalabra(resultSet.getString("palabra"));
 			palabra.setId(resultSet.getInt("id_twitter_filtro"));
 			
@@ -147,8 +173,7 @@ public class DbMethods {
 	
 	public void insertaHashtag (Hashtag hashtag, Connection c ) throws SQLException {
 		
-		String sql = "INSERT INTO twitter_hashtags(id_tweet, id_user, hashtag)"
-				+ " VALUES (?, ?, ?);";
+		String sql = "CALL sp_add_twitter_hashtags(?,?,?)";
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setLong(1, hashtag.getId_tweet());
@@ -165,8 +190,7 @@ public class DbMethods {
 	
 	public void insertaFiltroPalabra (FiltroPalabra filtroPalabra, Connection c ) throws SQLException {
 		
-		String sql = "INSERT INTO `social_network`.`twitter_tweets_filtro_palabra` (`id_filtro_palabra`,`id_tweet`)"
-				+ "VALUES(?, ?);";
+		String sql = "CALL sp_add_twitter_tweets_filtro_palabra(? , ? , ?)";
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setInt(1, filtroPalabra.getId_filtro_palabra());

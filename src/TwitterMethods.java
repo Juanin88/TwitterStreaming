@@ -8,6 +8,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +17,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import Stanford.StanfordSentimentAnalyzer;
 import modelos.FiltroPalabra;
@@ -54,9 +56,19 @@ public class TwitterMethods {
 		Users user = new Users();
 		Hashtag hashtag = new Hashtag();
 		
-		Connection c = null;
+		Properties props = new Properties();
+		FileInputStream fis = null;
+		fis = new FileInputStream("db.properties");
+		props.load(fis);
 
-		c = DriverManager.getConnection("jdbc:mysql://localhost/social_network?user=dev&password=dev&useSSL=false");
+		// load the Driver Class
+		Class.forName(props.getProperty("driver"));
+
+		// create the connection now
+		Connection c = DriverManager.getConnection(props.getProperty("url"),
+				props.getProperty("username"),
+				props.getProperty("password"));
+		
 		c.setAutoCommit(false);
 
 		//PreparedStatement stmt = null;
