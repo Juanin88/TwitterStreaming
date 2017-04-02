@@ -1,2 +1,4 @@
 /bin/
 /target/
+db.properties
+db2.properties
