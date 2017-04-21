@@ -1,8 +1,10 @@
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import modelos.Palabras;
 
@@ -33,14 +35,23 @@ public class TwitterApp {
 	public static void executeStreaming () throws Exception{
 
 		TwitterMethods twitterMethods = new TwitterMethods();
-		
 		DbMethods dbMethods = new DbMethods();
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();
 		List<Palabras> palabras = dbMethods.getWordList();
 		
-		//File file = new File("C:/streaming/logTwitterStreaming.log");
-		File file = new File("/home/ubuntu/log/logTwitterStreaming.log");
+		Properties props = new Properties();
+		FileInputStream fis = null;
+		fis = new FileInputStream("db.properties");
+		props.load(fis);
+
+		// load the Driver Class
+		Class.forName(props.getProperty("driver"));
+		
+		// path C:/streaming/logTwitterStreaming.log
+		// 		/home/ubuntu/log/logTwitterStreaming.log
+
+		File file = new File(props.getProperty("path"));
 
 		do{
 
