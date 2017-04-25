@@ -190,7 +190,7 @@ public class DbMethods {
 	
 	public void insertaFiltroPalabra (FiltroPalabra filtroPalabra, Connection c ) throws SQLException {
 		
-		String sql = "CALL sp_add_twitter_tweets_filtro_palabra(? , ? , ?)";
+		String sql = "CALL sp_add_twitter_tweets_filtro_palabra(? , ? )";
 		PreparedStatement st = null;
 		st = c.prepareStatement(sql);
 		st.setInt(1, filtroPalabra.getId_filtro_palabra());
