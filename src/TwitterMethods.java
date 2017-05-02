@@ -107,7 +107,15 @@ public class TwitterMethods {
 
 				String s = status.getText().toLowerCase();
 				for (Palabras palabra : palabras){
-					int validaString = s.indexOf(palabra.getPalabra());
+					int validaString = s.indexOf(" "+palabra.getPalabra()+" ");
+					if(validaString>0){
+						FiltroPalabra filtroPalabra = new FiltroPalabra();
+						filtroPalabra.setId_filtro_palabra(palabra.getId_twitter_filtro());
+						filtroPalabra.setId_tweet(status.getId());
+						dbMethods.insertaFiltroPalabra(filtroPalabra, c);
+					}
+					
+					validaString = s.indexOf("#"+palabra.getPalabra()+" ");
 					if(validaString>0){
 						FiltroPalabra filtroPalabra = new FiltroPalabra();
 						filtroPalabra.setId_filtro_palabra(palabra.getId_twitter_filtro());
