@@ -12,7 +12,7 @@ import modelos.Palabras;
 
 /**
  * 
- * @author Juan Garfias V�zquez.
+ * @author Juan Garfias Vázquez.
  * @version 0.1
  *
  */
