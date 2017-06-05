@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Properties;
 
 import modelos.Ciudad;
+import modelos.DbMethods;
 import modelos.Palabras;
+import servicio.TwitterService;
 
 /**
  * 
@@ -36,7 +38,7 @@ public class TwitterApp {
 	@SuppressWarnings("static-access")
 	public static void executeStreaming () throws Exception{
 
-		TwitterMethods twitterMethods = new TwitterMethods();
+		TwitterService twitterMethods = new TwitterService();
 		DbMethods dbMethods = new DbMethods();
 		
 		List<Ciudad> result = dbMethods.getGeoLocationCities();

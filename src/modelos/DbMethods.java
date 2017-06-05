@@ -1,4 +1,4 @@
-package controlador;
+package modelos;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,13 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import modelos.Ciudad;
-import modelos.FiltroPalabra;
-import modelos.Hashtag;
-import modelos.Palabras;
-import modelos.Tweets;
-import modelos.Users;
 
 /**
  * 

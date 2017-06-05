@@ -1,4 +1,4 @@
-package controlador;
+package servicio;
 import twitter4j.GeoLocation;
 import twitter4j.HashtagEntity;
 import twitter4j.Query;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Properties;
 
 import Stanford.StanfordSentimentAnalyzer;
+import modelos.DbMethods;
 import modelos.FiltroPalabra;
 import modelos.Hashtag;
 import modelos.Palabras;
@@ -32,11 +33,11 @@ import modelos.Users;
  * @author LenovoY50
  *
  */
-public class TwitterMethods {
+public class TwitterService {
 	
 	private static String pattern;
 	
-	public TwitterMethods() {
+	public TwitterService() {
 		this.pattern = "[^a-zA-Z0-9 .,:;@#$&ÑñáéíóúÁÉÍÓÚ%'´]+";
 	}
 	
@@ -152,6 +153,6 @@ public class TwitterMethods {
 	}
 
 	public void setPattern(String pattern) {
-		TwitterMethods.pattern = pattern;
+		TwitterService.pattern = pattern;
 	}
 }
