@@ -2,6 +2,11 @@ package modelos;
 
 import java.sql.Timestamp;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class Tweets {
 	 /* (non-Javadoc)
 	 * @see java.lang.Object#toString()

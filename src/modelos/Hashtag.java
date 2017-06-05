@@ -1,5 +1,10 @@
 package modelos;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class Hashtag {
 	private long id_tweet;
 	private long id_user;

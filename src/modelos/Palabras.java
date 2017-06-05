@@ -1,5 +1,10 @@
 package modelos;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class Palabras {
 	private int id_twitter_filtro;
 	private String palabra;

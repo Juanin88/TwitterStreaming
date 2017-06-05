@@ -1,3 +1,4 @@
+package controlador;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,11 +7,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import modelos.Ciudad;
 import modelos.Palabras;
 
 /**
  * 
- * @author Juan Garfias Vázquez.
+ * @author Juan Garfias Vï¿½zquez.
  * @version 0.1
  *
  */

@@ -1,3 +1,4 @@
+package controlador;
 import twitter4j.GeoLocation;
 import twitter4j.HashtagEntity;
 import twitter4j.Query;
@@ -26,13 +27,17 @@ import modelos.Palabras;
 import modelos.Tweets;
 import modelos.Users;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class TwitterMethods {
 	
 	private static String pattern;
 	
 	public TwitterMethods() {
-		super();
-		this.setPattern("[^a-zA-Z0-9 .,:;@#$&—Ò·ÈÌÛ˙¡…Õ”⁄%'¥]+");
+		this.pattern = "[^a-zA-Z0-9 .,:;@#$&√ë√±√°√©√≠√≥√∫√Å√â√ç√ì√ö%'¬¥]+";
 	}
 	
 	public static void queryTwitterByGeoLocation(double latitude, double longitude, double radius, String queryString, String ciudad, String lang, List<Palabras> palabras) throws TwitterException, IOException, ClassNotFoundException, SQLException {
@@ -47,7 +52,7 @@ public class TwitterMethods {
 		// Recibe latitud y longitud para buscar por cierta zona geografica.
 		query.setGeoCode(new GeoLocation(latitude, longitude), radius, Query.KILOMETERS);
 		
-		// Filtramos para idioma inglÈs.
+		// Filtramos para idioma inglÔøΩs.
 		query.setLang(lang);
 
 		QueryResult result = twitter.search(query);

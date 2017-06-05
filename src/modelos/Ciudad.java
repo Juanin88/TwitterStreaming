@@ -1,4 +1,10 @@
+package modelos;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class Ciudad {
 
 	private int id;

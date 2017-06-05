@@ -1,3 +1,4 @@
+package controlador;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import modelos.Ciudad;
 import modelos.FiltroPalabra;
 import modelos.Hashtag;
 import modelos.Palabras;
@@ -19,7 +21,7 @@ import modelos.Users;
 
 /**
  * 
- * @author Juan Garfias V·zquez
+ * @author Juan Garfias V√°zquez
  *
  */
 public class DbMethods {
@@ -28,7 +30,7 @@ public class DbMethods {
 
 	public DbMethods() {
 		super();
-		this.pattern = "[^a-zA-Z0-9 .,:;@#$&—Ò·ÈÌÛ˙¡…Õ”⁄%'¥]+";
+		this.pattern = "[^a-zA-Z0-9 .,:;@#$&√ë√±√°√©√≠√≥√∫√Å√â√ç√ì√ö%'¬¥]+";
 	}
 
 	public List<Ciudad> getGeoLocationCities() throws ClassNotFoundException, SQLException, IOException {

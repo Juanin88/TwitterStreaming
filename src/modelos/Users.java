@@ -1,5 +1,10 @@
 package modelos;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class Users {
 	private long id_user; 
 	private String screen_name;

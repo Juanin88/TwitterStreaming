@@ -1,5 +1,10 @@
 package modelos;
 
+/**
+ * 
+ * @author LenovoY50
+ *
+ */
 public class FiltroPalabra {
 	private int id_filtro_palabra;
 	private long id_tweet;

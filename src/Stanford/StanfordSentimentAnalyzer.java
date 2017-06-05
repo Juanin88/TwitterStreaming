@@ -7,7 +7,11 @@ import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.util.*;
 
-/** This class demonstrates building and using a Stanford CoreNLP pipeline. */
+/** This class demonstrates building and using a Stanford CoreNLP pipeline. 
+ * 
+ * @author LenovoY50
+ *
+ */
 public class StanfordSentimentAnalyzer {
 
 //  /** Usage: java -cp "*" StanfordCoreNlpDemo [inputFile [outputTextFile [outputXmlFile]]] */
