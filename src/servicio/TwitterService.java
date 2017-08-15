@@ -16,7 +16,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -53,7 +52,7 @@ public class TwitterService {
 		// Recibe latitud y longitud para buscar por cierta zona geografica.
 		query.setGeoCode(new GeoLocation(latitude, longitude), radius, Query.KILOMETERS);
 		
-		// Filtramos para idioma ingl�s.
+		// Filtramos para idioma inglés.
 		query.setLang(lang);
 
 		QueryResult result = twitter.search(query);
@@ -83,22 +82,20 @@ public class TwitterService {
 		DbMethods dbMethods = new DbMethods();
 		
 		for (Status status : result.getTweets()) {
-		
 			if (status.getRetweetCount() == 0) {
-				
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				@SuppressWarnings("unused")
 				String date = sdf.format(status.getCreatedAt());					
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp( status.getCreatedAt().getTime() );
-				
 				tweet.setCiudad(ciudad);
 				tweet.setId_tweet(status.getId());
 				tweet.setId_user(status.getUser().getId());
 				tweet.setTweet(status.getText());
-				tweet.setSentimiento(StanfordSentimentAnalyzer.getSentiment(status.getText().replaceAll( getPattern()  , "").trim() ));
-				//tweet.setSentimiento("");
+				tweet.setSentimiento(
+						StanfordSentimentAnalyzer.getSentiment(
+								status.getText().replaceAll( getPattern()  , "").trim() )
+						);
 				tweet.setCreated( sqlDate );
-				
 				// Datos del Usuario.
 				user.setId_user(status.getUser().getId());
 				user.setScreen_name(status.getUser().getScreenName());
@@ -107,10 +104,8 @@ public class TwitterService {
 				user.setFriends_count(status.getUser().getFriendsCount());
 				user.setFollowers_count(status.getUser().getFollowersCount());
 				user.setLocation(status.getUser().getLocation());
-
 				dbMethods.insertaUsuario(user, c);
 				dbMethods.insertaTweet(tweet, c);
-
 				String s = status.getText().toLowerCase();
 				for (Palabras palabra : palabras){
 					int validaString = s.indexOf(" "+palabra.getPalabra()+" ");
@@ -120,7 +115,6 @@ public class TwitterService {
 						filtroPalabra.setId_tweet(status.getId());
 						dbMethods.insertaFiltroPalabra(filtroPalabra, c);
 					}
-					
 					validaString = s.indexOf("#"+palabra.getPalabra()+" ");
 					if(validaString>0){
 						FiltroPalabra filtroPalabra = new FiltroPalabra();
@@ -129,7 +123,6 @@ public class TwitterService {
 						dbMethods.insertaFiltroPalabra(filtroPalabra, c);
 					}
 				}
-
 				// Datos del Hashtag
 				if (status.getHashtagEntities().length > 0) {
 					HashtagEntity[] hashtagEntity = status.getHashtagEntities().clone();
