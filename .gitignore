@@ -2,3 +2,4 @@
 /target/
 db.properties
 db2.properties
+/.classpath
